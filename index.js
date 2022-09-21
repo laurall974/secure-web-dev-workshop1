@@ -87,15 +87,15 @@ console.log(getFilmingLocationsNumberPerDistrict())
 //    const result = [{film: 'LRDM - Patriot season 2', locations: 12}, {...}]
 // 2. Log the first and last item of the array
 function getFilmLocationsByFilm () {
-	var tabFilmNames = []
+	let tabFilmNames = []
 	filmingLocations.forEach(function(element){
 		if (!tabFilmNames.includes(element.fields.nom_tournage)){
 			tabFilmNames.push(element.fields.nom_tournage)
 		}
 	})
-	var tab = []
+	let tab = []
 	tabFilmNames.forEach(function(element){
-		var dict = {"film":element,"locations":0}
+		let dict = {"film":element,"locations":0}
 		filmingLocations.forEach(function(element1){
 			if (element1.fields.nom_tournage == element){
 				dict["locations"]++
@@ -166,6 +166,8 @@ const favoriteFilms =
 		'Alice NEVERS',
 		'Emily in Paris',
 	]
+
+console.log('Tous les arrondissement des lieux de tournage de nos films favoris')
 console.log(getFavoriteFilmsLocations(favoriteFilms))
 
 
@@ -176,23 +178,68 @@ console.log(getFavoriteFilmsLocations(favoriteFilms))
 //        'Une jeune fille qui va bien': [{...}]
 //     }
 function getFilmingLocationsPerFilm () {
-	return { }
+	let tabFilmNames = []
+	filmingLocations.forEach(function(element){
+		if (!tabFilmNames.includes(element.fields.nom_tournage)){
+			tabFilmNames.push(element.fields.nom_tournage)
+		}
+	})
+	let tab = []
+	tabFilmNames.forEach(function(element){
+		let dict = {"film":element,"locations":[]}
+		filmingLocations.forEach(function(element1){
+			if (element1.fields.nom_tournage == element){
+				dict["locations"].push(element1.fields.adresse_lieu);
+			}
+		})
+		tab.push(dict);
+	})
+	return tab[0];
 }
+console.log('All filming locations for each film : ')
+console.log(getFilmingLocationsPerFilm())
 
 // 📝 TODO: Count each type of film (Long métrage, Série TV, etc...)
 // 1. Implement the function
 // 2. Log the result
 function countFilmingTypes () {
-	return {}
+	let tabTypeFilm = []
+	filmingLocations.forEach(function(element){
+		if (!tabTypeFilm.includes(element.fields.type_tournage)){
+			tabTypeFilm.push(element.fields.type_tournage)
+		}
+	})
+	let tab = []
+	tabTypeFilm.forEach(function(element){
+		let dict = {"type":element,"count":0}
+		filmingLocations.forEach(function(element1){
+			if (element1.fields.type_tournage == element){
+				dict["count"]++;
+			}
+		})
+		tab.push(dict);
+	})
+	return tab;
 }
+
+console.log('Count each type of film (Long métrage, Série TV, etc...) : ')
+console.log(countFilmingTypes());
+
 
 // 📝 TODO: Sort each type of filming by count, from highest to lowest
 // 1. Implement the function. It should return a sorted array of objects like:
 //    [{type: 'Long métrage', count: 1234}, {...}]
 // 2. Log the result
-function sortedCountFilmingTypes () {
-	return []
+function sortedCountFilmingTypes (liste) {
+	liste.sort(function(a,b){return b['count']-a['count']});
+	return liste
 }
+
+console.log('Sort each type of filming by count, from highest to lowest : ')
+console.log(sortedCountFilmingTypes(countFilmingTypes()));
+
+
+
 
 /**
  * This arrow functions takes a duration in milliseconds and returns a
