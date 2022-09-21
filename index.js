@@ -133,7 +133,7 @@ function getArseneFilmingLocations () {
 
 
 }
-console.log('TODO: All the filming locations of LRDM - Patriot season 2')
+console.log('All the filming locations of LRDM - Patriot season 2')
 console.log(getArseneFilmingLocations())
 
 // 📝 TODO: Tous les arrondissement des lieux de tournage de nos films favoris
@@ -144,20 +144,30 @@ console.log(getArseneFilmingLocations())
 // 2. Log the result
 function getFavoriteFilmsLocations (favoriteFilmsNames) {
 	let result = new Array();
-	let l = filmingLocations.filter(v => v.fields.nom_tournage == favoriteFilmsNames);
-	let i = 0;
-	while (i != l.length-1) {
-		result.push(l[i].fields.ardt);
+	let resultb = new Object();
+	for (let i=0; i < favoriteFilmsNames.length; i++) {
+		let l = filmingLocations.filter(v => v.fields.nom_tournage == favoriteFilmsNames[i]);
+		let cpt = 0;
+		while (cpt != l.length-1){
+			resultb[favoriteFilmsNames[i]] = l[cpt].fields.ardt_lieu;
+			result.push(resultb);
+			cpt = cpt + 1;
+		}
+		result = result.filter((x, i) => result.indexOf(x) === i); // éliminer les doublons
 		i = i+1;
 	}
 	return result
 }
+//alice nevers il trouve pas ?? à régler
+
 const favoriteFilms =
 	[
 		'LRDM - Patriot season 2',
 		'Alice NEVERS',
 		'Emily in Paris',
 	]
+console.log(getFavoriteFilmsLocations(favoriteFilms))
+
 
 // 📝 TODO: All filming locations for each film
 //     e.g. :
